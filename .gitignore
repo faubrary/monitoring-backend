@@ -1,4 +1,6 @@
 target
 build/
+out/
+.attach_pid*
 .gradle
 .idea

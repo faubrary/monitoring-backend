@@ -5,12 +5,15 @@ import probe.model.Member;
 import probe.model.MembersGroup;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class Finder {
+    // Данные могут храниться в хранилище в виде статических значений (хардкод) ...
     public static final List<MembersGroup> GROUPS_IN_MEMORY = Arrays.asList(
             new MembersGroup("MG A", Arrays.asList(
                     new Member("A10", 10),
@@ -27,16 +30,20 @@ public class Finder {
             ))
     );
 
-    public Set<String> findOldMembers(List<MembersGroup> groups) {
-        Set<String> memberNames = new HashSet<>();
-        for (MembersGroup membersGroup : groups) {
-            for (Member member : membersGroup.getMembers()) {
-                if (member.getAge() > 50) {
-                    String name = member.getName();
-                    memberNames.add(name);
-                }
-            }
-        }
-        return memberNames;
+    /*
+        2)
+        Отрефакторить класс Finder с применяем Java 8 Stream API для использования его в REST
+        сервисе.
+        ...
+        Приветствуется архитектурный рефакторинг.
+
+        fa: смысла в  interface OldMemberFinder не увидел, выпилил.
+     */
+    public Set<String> findOldMemberNames(List<MembersGroup> groups) {
+        return findMembers(groups, m -> m.getAge() > 50).map(Member::getName).collect(Collectors.toSet());
+    }
+
+    public Stream<Member> findMembers(List<MembersGroup> groups, Predicate<Member> memberPredicate) {
+        return groups.stream().flatMap(g -> g.getMembers().stream()).filter(memberPredicate);
     }
 }
