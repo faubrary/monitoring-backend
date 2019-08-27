@@ -1,29 +1,29 @@
 package probe.controller;
 
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import probe.model.Member;
 import probe.service.Finder;
 
-@Controller
-public class FinderController {
+import java.util.Set;
 
-    @Autowired
+@Controller
+@AllArgsConstructor
+public class FinderController {
     private Finder finder;
 
     @GetMapping("/find/younger/{age}")
-    public @ResponseBody Member younger(@PathVariable("age") int age) {
+    public @ResponseBody
+    Member younger(@PathVariable("age") int age) {
         return new Member("someName", age);
     }
 
     @GetMapping("/find/old")
-    public @ResponseBody Set<String> oldMemberNames() {
+    public @ResponseBody
+    Set<String> oldMemberNames() {
         return finder.findOldMembers(Finder.GROUPS_IN_MEMORY);
     }
 }

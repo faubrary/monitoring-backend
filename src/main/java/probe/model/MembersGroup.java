@@ -1,21 +1,13 @@
 package probe.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.List;
 
+@AllArgsConstructor
+@Getter
 public class MembersGroup {
     private final String groupName;
     private final List<Member> members;
-
-    public MembersGroup(String groupName, List<Member> members) {
-        this.groupName = groupName;
-        this.members = members;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-    
-    public List<Member> getMembers() {
-        return members;
-    }
 }
